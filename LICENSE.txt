@@ -50,26 +50,16 @@ non-commercial purposes only.
 4. Summary of Key Points
 ------------------------
 
-- ✅ Personal, non-commercial use allowed.
-- ⚠ Redistribution of modified versions requires **permission**.
-- ✨ Always credit the original author for unmodified content.
-- 🚫 No Minecraft IP rights granted.
-- ⚡ Software is **provided without warranty**.
+- Personal, non-commercial use allowed.
+- Redistribution of modified versions requires **permission**.
+- Always credit the original author for unmodified content.
+- No Minecraft IP rights granted.
+- Software is **provided without warranty**.
 
 ---
 
 5. Notes
 --------
 
-- Include this LICENSE.txt in your repository root.
-- Add a short header in every source file, e.g.:
-
-    /*
-     * Copyright (c) 2025 IneiTsuki
-     * Licensed under the IneiTsuki Limited Redistribution License (ILRL)
-     * See LICENSE.txt for full terms.
-     */
-
-- Config or JSON comments should clarify units (e.g., ban_duration is in minutes).
 - This license does not override Mojang/Microsoft's Minecraft EULA:
   https://account.mojang.com/documents/minecraft_eula
