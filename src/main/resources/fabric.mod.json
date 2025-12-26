@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "temperaturem",
+  "version": "${version}",
+  "name": "temperatureM",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "unlicense",
+  "icon": "assets/temperaturem/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "net.IneiTsuki.temperaturem.client.TemperaturemClient"
+    ],
+    "main": [
+      "net.IneiTsuki.temperaturem.Temperaturem"
+    ]
+  },
+  "mixins": [
+    "temperaturem.mixins.json",
+    {
+      "config": "temperaturem.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "minecraft:lava": "100",
+  "minecraft:magma_block": "75",
+  "minecraft:fire": "65",
+  "minecraft:soul_fire": "40",
+
+  "minecraft:furnace": "55",
+  "minecraft:blast_furnace": "60",
+  "minecraft:smoker": "50",
+  "minecraft:campfire": "45",
+  "minecraft:soul_campfire": "30",
+
+  "minecraft:torch": "15",
+  "minecraft:soul_torch": "10",
+  "minecraft:lantern": "18",
+
+  "minecraft:netherrack": "45",
+  "minecraft:nether_bricks": "40",
+  "minecraft:crimson_nylium": "35",
+  "minecraft:warped_nylium": "35",
+
+  "minecraft:blue_ice": "-15",
+  "minecraft:packed_ice": "-10",
+  "minecraft:ice": "-5",
+  "minecraft:frosted_ice": "-3",
+
+  "minecraft:snow_block": "-8",
+  "minecraft:snow": "-5",
+  "minecraft:powder_snow": "-12",
+
+  "minecraft:water": "-5"
+}
