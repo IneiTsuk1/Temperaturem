@@ -1,24 +1,75 @@
-This is free and unencumbered software released into the public domain.
+IneiTsuki Limited Redistribution License (ILRL) – Version 1.0 (2025)
+==================================================================
 
-Anyone is free to copy, modify, publish, use, compile, sell, or
-distribute this software, either in source code form or as a compiled
-binary, for any purpose, commercial or non-commercial, and by any
-means.
+Copyright (c) 2025 IneiTsuki
 
-In jurisdictions that recognize copyright laws, the author or authors
-of this software dedicate any and all copyright interest in the
-software to the public domain. We make this dedication for the benefit
-of the public at large and to the detriment of our heirs and
-successors. We intend this dedication to be an overt act of
-relinquishment in perpetuity of all present and future rights to this
-software under copyright law.
+Permission is granted to use, copy, and modify this software for personal,
+non-commercial purposes only.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
+---
 
-For more information, please refer to <http://unlicense.org/>
+1. Redistribution Rules
+-----------------------
+
+1.1 Unmodified Redistribution
+- You may redistribute the software in its original, unmodified form.
+- The copyright notice and this license **must remain intact**.
+
+1.2 Modified Redistribution
+- You **cannot redistribute modified versions** (source or compiled) without
+  **prior written permission** from the copyright holder.
+
+1.3 Credit Requirement
+- Any redistribution, modified or unmodified, **must credit the original
+  author** for the unmodified parts of the software.
+
+---
+
+2. Usage Restrictions
+---------------------
+
+- The software is **for personal, non-commercial use only**.
+- You **may not use this software to create derivative works** that violate
+  Minecraft’s End User License Agreement (EULA) or terms of service.
+- This license **does not grant rights** to Minecraft trademarks, logos, or
+  other intellectual property owned by Mojang or Microsoft.
+
+---
+
+3. Warranty Disclaimer
+----------------------
+
+- The software is provided **“as-is”**.
+- The author(s) **do not provide any warranty** of any kind, either express
+  or implied.
+- The author(s) **are not liable** for any damages or claims arising from
+  the use of this software.
+
+---
+
+4. Summary of Key Points
+------------------------
+
+- ✅ Personal, non-commercial use allowed.
+- ⚠ Redistribution of modified versions requires **permission**.
+- ✨ Always credit the original author for unmodified content.
+- 🚫 No Minecraft IP rights granted.
+- ⚡ Software is **provided without warranty**.
+
+---
+
+5. Notes
+--------
+
+- Include this LICENSE.txt in your repository root.
+- Add a short header in every source file, e.g.:
+
+    /*
+     * Copyright (c) 2025 IneiTsuki
+     * Licensed under the IneiTsuki Limited Redistribution License (ILRL)
+     * See LICENSE.txt for full terms.
+     */
+
+- Config or JSON comments should clarify units (e.g., ban_duration is in minutes).
+- This license does not override Mojang/Microsoft's Minecraft EULA:
+  https://account.mojang.com/documents/minecraft_eula
