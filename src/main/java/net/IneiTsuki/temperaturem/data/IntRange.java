@@ -31,21 +31,35 @@ public class IntRange {
     }
 
     public static IntRange parse(String s) {
+        if (s == null || s.trim().isEmpty()) {
+            throw new IllegalArgumentException("IntRange cannot be null or empty");
+        }
+
         s = s.trim();
         int min, max;
 
         try {
             if (s.contains("|")) {
                 String[] parts = s.split("\\|");
-                if (parts.length != 2)
-                    throw new IllegalArgumentException("Invalid IntRange: " + s);
+                if (parts.length != 2) {
+                    throw new IllegalArgumentException("Invalid IntRange format (expected 'min|max'): " + s);
+                }
                 min = Integer.parseInt(parts[0].trim());
                 max = Integer.parseInt(parts[1].trim());
             } else {
                 min = max = Integer.parseInt(s);
             }
+
+            // Validate reasonable temperature ranges (-273°C is absolute zero, 1000°C is extreme)
+            if (min < -273 || max < -273) {
+                throw new IllegalArgumentException("Temperature below absolute zero: " + s);
+            }
+            if (min > 1000 || max > 1000) {
+                throw new IllegalArgumentException("Temperature unreasonably high (>1000°C): " + s);
+            }
+
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid IntRange: " + s, e);
+            throw new IllegalArgumentException("Invalid IntRange numbers: " + s, e);
         }
 
         return new IntRange(min, max);

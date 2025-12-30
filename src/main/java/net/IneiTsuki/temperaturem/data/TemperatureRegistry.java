@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class TemperatureRegistry implements SimpleSynchronousResourceReloadListener {
 
-    private static final Map<Identifier, Integer> BLOCK_TEMPS = new HashMap<>();
+    private static final Map<Identifier, Integer> BLOCK_TEMPS = new HashMap<>(256);
     private static final String CONFIG_PATH = "config/temperaturem/blocks/temperature_blocks.json";
 
     @Override
@@ -48,7 +48,7 @@ public class TemperatureRegistry implements SimpleSynchronousResourceReloadListe
                 }
 
                 File parentDir = configFile.getParentFile();
-                if (!parentDir.exists() && !parentDir.mkdirs()) {
+                if (parentDir != null && !parentDir.exists() && !parentDir.mkdirs()) {
                     Temperaturem.LOGGER.error("Failed to create config directory: {}", parentDir.getAbsolutePath());
                     return;
                 }
@@ -62,15 +62,28 @@ public class TemperatureRegistry implements SimpleSynchronousResourceReloadListe
             json.entrySet().forEach(entry -> {
                 try {
                     IntRange range = IntRange.parse(entry.getValue().getAsString());
-                    int avgTemp = (range.getMin() + range.getMax()) / 2;
+                    int avgTemp = range.getAverage();
+
+                    // Validate reasonable temperature
+                    if (avgTemp < -273 || avgTemp > 1000) {
+                        Temperaturem.LOGGER.warn("Temperature out of range for block '{}': {}°C",
+                                entry.getKey(), avgTemp);
+                        return;
+                    }
+
                     BLOCK_TEMPS.put(new Identifier(entry.getKey()), avgTemp);
+                } catch (IllegalArgumentException e) {
+                    Temperaturem.LOGGER.error("Invalid temperature entry for block '{}': {}",
+                            entry.getKey(), entry.getValue(), e);
                 } catch (Exception e) {
-                    Temperaturem.LOGGER.error("Invalid temperature entry for block '{}'", entry.getKey(), e);
+                    Temperaturem.LOGGER.error("Failed to parse block entry '{}'", entry.getKey(), e);
                 }
             });
 
             Temperaturem.LOGGER.info("Loaded {} block temperature entries", BLOCK_TEMPS.size());
 
+        } catch (IOException e) {
+            Temperaturem.LOGGER.error("Failed to load block temperatures (IO error)", e);
         } catch (Exception e) {
             Temperaturem.LOGGER.error("Failed to load block temperatures", e);
         }

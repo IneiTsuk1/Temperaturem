@@ -10,19 +10,19 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerTemperatureManager {
 
-    private static final Map<UUID, PlayerTemperature> TEMPS = new HashMap<>();
+    private static final ConcurrentHashMap<UUID, PlayerTemperature> TEMPS = new ConcurrentHashMap<>();
 
-    private static final double BASE_TEMP_CHANGE_RATE = 0.1;
+    private static final double BASE_TEMP_CHANGE_RATE = 0.03;
     private static final int UPDATE_INTERVAL = 2;
     private static final int SYNC_INTERVAL = 3;
 
     private static int tickCounter = 0;
+    private static final int TICK_WRAP = UPDATE_INTERVAL * SYNC_INTERVAL * 100; // Prevent overflow
 
     public static void init() {
         ServerTickEvents.END_SERVER_TICK.register(PlayerTemperatureManager::tick);
@@ -33,7 +33,7 @@ public class PlayerTemperatureManager {
     }
 
     private static void tick(MinecraftServer server) {
-        tickCounter++;
+        tickCounter = (tickCounter + 1) % TICK_WRAP;
         boolean shouldUpdate = tickCounter % UPDATE_INTERVAL == 0;
         boolean shouldSync = tickCounter % SYNC_INTERVAL == 0;
 
@@ -53,25 +53,16 @@ public class PlayerTemperatureManager {
                         player.getBlockPos()
                 );
 
-                double currentTemp = temp.getExact(); // Use exact double value
+                double currentTemp = temp.getExact();
                 double delta = targetTemp - currentTemp;
                 double distance = Math.abs(delta);
-                double changeRate = BASE_TEMP_CHANGE_RATE;
+                double changeRate = calculateChangeRate(distance);
 
-                // Adaptive change rate based on distance from target
-                if (distance > 50) {
-                    changeRate = BASE_TEMP_CHANGE_RATE * 5.0;
-                } else if (distance > 20) {
-                    changeRate = BASE_TEMP_CHANGE_RATE * 3.0;
-                } else if (distance > 10) {
-                    changeRate = BASE_TEMP_CHANGE_RATE * 2.0;
-                }
-
-                if (Math.abs(delta) > 0.01) { // Lowered threshold for better precision
+                if (distance > 0.01) {
                     double change = Math.signum(delta) * Math.min(distance, changeRate);
                     currentTemp += change;
                     currentTemp = clamp(currentTemp, -50, 150);
-                    temp.setExact(currentTemp); // Store exact value
+                    temp.setExact(currentTemp);
                 }
             }
 
@@ -79,6 +70,31 @@ public class PlayerTemperatureManager {
                 sendTemperatureToClient(player, temp.get());
             }
         }
+    }
+
+    /**
+     * Calculate adaptive change rate with smooth transitions.
+     */
+    private static double calculateChangeRate(double distance) {
+        double changeRate = BASE_TEMP_CHANGE_RATE;
+
+        if (distance > 50) {
+            changeRate *= 2.0;
+        } else if (distance > 20) {
+            // Smooth transition from 3.0x to 5.0x
+            double factor = 1.2 + 2.0 * ((distance - 20) / 30.0);
+            changeRate *= factor;
+        } else if (distance > 10) {
+            // Smooth transition from 2.0x to 3.0x
+            double factor = 1.1 + 1.0 * ((distance - 10) / 10.0);
+            changeRate *= factor;
+        } else if (distance > 1) {
+            // Smooth transition from 1.0x to 2.0x
+            double factor = 1.0 + 1.0 * ((distance - 1) / 9.0);
+            changeRate *= factor;
+        }
+
+        return changeRate;
     }
 
     public static void sendTemperatureToClient(ServerPlayerEntity player, int temp) {

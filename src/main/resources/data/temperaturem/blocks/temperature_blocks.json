@@ -1,4 +1,9 @@
 {
+  "_version": "1.0",
+  "_comment": "Block temperature effects in Celsius. Use single value or min|max range.",
+  "_info": "These values are added to ambient temperature when near the block.",
+  "_multipliers": "Blocks at feet: 2x effect, blocks at player position: 1.5x effect",
+
   "minecraft:lava": "100",
   "minecraft:magma_block": "75",
   "minecraft:fire": "65",
@@ -13,6 +18,7 @@
   "minecraft:torch": "15",
   "minecraft:soul_torch": "10",
   "minecraft:lantern": "18",
+  "minecraft:soul_lantern": "12",
 
   "minecraft:netherrack": "45",
   "minecraft:nether_bricks": "40",
@@ -28,5 +34,12 @@
   "minecraft:snow": "-5",
   "minecraft:powder_snow": "-12",
 
-  "minecraft:water": "-5"
+  "minecraft:water": "-5",
+
+  "_examples": {
+    "_comment": "Examples for adding modded blocks",
+    "modid:heater": "50",
+    "modid:air_conditioner": "-30",
+    "modid:thermal_generator": "70|90"
+  }
 }
