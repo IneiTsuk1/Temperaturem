@@ -2,6 +2,7 @@ package net.IneiTsuki.temperaturem.api;
 
 import net.IneiTsuki.temperaturem.data.BiomeTemperatureRegistry;
 import net.IneiTsuki.temperaturem.data.TemperatureRegistry;
+import net.IneiTsuki.temperaturem.effects.TemperatureEffects;
 import net.IneiTsuki.temperaturem.player.PlayerTemperature;
 import net.IneiTsuki.temperaturem.player.PlayerTemperatureManager;
 import net.minecraft.block.Block;
@@ -16,8 +17,18 @@ import net.minecraft.util.Identifier;
  * Example usage:
  * <pre>
  * TemperatureAPI api = TemperatureAPI.getInstance();
+ *
+ * // Player temperature manipulation
  * int temp = api.getPlayerTemperature(player);
  * api.modifyPlayerTemperature(player, -10.0); // Cool player by 10 degrees
+ *
+ * // Runtime registration
+ * api.registerBlockTemperature(new Identifier("mymod", "hot_rock"), 80);
+ * api.registerBiomeTemperature(new Identifier("mymod", "volcanic_wastes"), 95);
+ *
+ * // Effect configuration
+ * api.setEnableTemperatureDamage(true);
+ * api.setDamageInterval(40); // Damage every 2 seconds
  * </pre>
  */
 public class TemperatureAPI implements ITemperatureAPI {
@@ -36,6 +47,8 @@ public class TemperatureAPI implements ITemperatureAPI {
     public static TemperatureAPI getInstance() {
         return INSTANCE;
     }
+
+    // ===== Player Temperature Methods =====
 
     @Override
     public int getPlayerTemperature(ServerPlayerEntity player) {
@@ -81,25 +94,47 @@ public class TemperatureAPI implements ITemperatureAPI {
         }
     }
 
+    // ===== Runtime Registration Methods =====
+
     @Override
     public void registerBlockTemperature(Identifier block, int temperature) {
-        // Note: This would require making TemperatureRegistry methods public
-        // For now, users should add entries to the config file
-        throw new UnsupportedOperationException(
-                "Runtime block registration not yet supported. " +
-                        "Please add blocks to config/temperaturem/blocks/temperature_blocks.json"
-        );
+        if (block == null) {
+            throw new IllegalArgumentException("Block identifier cannot be null");
+        }
+
+        if (!TemperatureRegistry.registerRuntime(block, temperature)) {
+            throw new IllegalArgumentException(
+                    "Failed to register block temperature for '" + block + "'. " +
+                            "Block may not exist or temperature is out of range (-273 to 1000°C)."
+            );
+        }
     }
 
     @Override
     public void registerBiomeTemperature(Identifier biome, int temperature) {
-        // Note: This would require making BiomeTemperatureRegistry methods public
-        // For now, users should add entries to the config file
-        throw new UnsupportedOperationException(
-                "Runtime biome registration not yet supported. " +
-                        "Please add biomes to config/temperaturem/biomes/biome_temperatures.json"
-        );
+        if (biome == null) {
+            throw new IllegalArgumentException("Biome identifier cannot be null");
+        }
+
+        if (!BiomeTemperatureRegistry.registerRuntime(biome, temperature)) {
+            throw new IllegalArgumentException(
+                    "Failed to register biome temperature for '" + biome + "'. " +
+                            "Temperature may be out of range (-273 to 1000°C)."
+            );
+        }
     }
+
+    @Override
+    public boolean unregisterBlockTemperature(Identifier block) {
+        return TemperatureRegistry.unregisterRuntime(block);
+    }
+
+    @Override
+    public boolean unregisterBiomeTemperature(Identifier biome) {
+        return BiomeTemperatureRegistry.unregisterRuntime(biome);
+    }
+
+    // ===== Query Methods =====
 
     @Override
     public int getBlockTemperature(Identifier block) {
@@ -110,13 +145,11 @@ public class TemperatureAPI implements ITemperatureAPI {
         return TemperatureRegistry.getTemperature(blockObj.getDefaultState());
     }
 
-
     @Override
     public Integer getBiomeTemperature(Identifier biomeId) {
         if (biomeId == null) return null;
         return BiomeTemperatureRegistry.getTemperatureOverride(biomeId);
     }
-
 
     @Override
     public boolean hasBlockTemperature(Identifier block) {
@@ -127,11 +160,80 @@ public class TemperatureAPI implements ITemperatureAPI {
         return TemperatureRegistry.hasTemperature(blockObj.getDefaultState());
     }
 
-
     @Override
     public boolean hasBiomeTemperature(Identifier biomeId) {
         if (biomeId == null) return false;
         return BiomeTemperatureRegistry.hasOverride(biomeId);
     }
 
+    // ===== Effect Configuration Methods =====
+
+    @Override
+    public void setEnableTemperatureDamage(boolean enable) {
+        TemperatureEffects.setEnableDamage(enable);
+    }
+
+    @Override
+    public void setEnableStatusEffects(boolean enable) {
+        TemperatureEffects.setEnableStatusEffects(enable);
+    }
+
+    @Override
+    public void setEnableWarnings(boolean enable) {
+        TemperatureEffects.setEnableWarnings(enable);
+    }
+
+    @Override
+    public void setDamageInterval(int ticks) {
+        if (ticks < 1) {
+            throw new IllegalArgumentException("Damage interval must be at least 1 tick");
+        }
+        TemperatureEffects.setDamageInterval(ticks);
+    }
+
+    @Override
+    public void setColdDamage(float damage) {
+        if (damage < 0) {
+            throw new IllegalArgumentException("Damage cannot be negative");
+        }
+        TemperatureEffects.setColdDamage(damage);
+    }
+
+    @Override
+    public void setHotDamage(float damage) {
+        if (damage < 0) {
+            throw new IllegalArgumentException("Damage cannot be negative");
+        }
+        TemperatureEffects.setHotDamage(damage);
+    }
+
+    @Override
+    public boolean isTemperatureDamageEnabled() {
+        return TemperatureEffects.isEnableDamage();
+    }
+
+    @Override
+    public boolean isStatusEffectsEnabled() {
+        return TemperatureEffects.isEnableStatusEffects();
+    }
+
+    @Override
+    public boolean isWarningsEnabled() {
+        return TemperatureEffects.isEnableWarnings();
+    }
+
+    @Override
+    public int getDamageInterval() {
+        return TemperatureEffects.getDamageInterval();
+    }
+
+    @Override
+    public float getColdDamage() {
+        return TemperatureEffects.getColdDamage();
+    }
+
+    @Override
+    public float getHotDamage() {
+        return TemperatureEffects.getHotDamage();
+    }
 }

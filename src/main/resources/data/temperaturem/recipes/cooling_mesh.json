@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SPS",
+    "PLP",
+    "SPS"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:string"
+    },
+    "P": {
+      "item": "minecraft:packed_ice"
+    },
+    "L": {
+      "item": "temperaturem:leather_lining"
+    }
+  },
+  "result": {
+    "item": "temperaturem:cooling_mesh",
+    "count": 1
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FDF",
+    "DND",
+    "FDF"
+  ],
+  "key": {
+    "F": {
+      "item": "temperaturem:fur_lining"
+    },
+    "D": {
+      "item": "minecraft:blaze_powder"
+    },
+    "N": {
+      "item": "minecraft:rabbit_hide"
+    }
+  },
+  "result": {
+    "item": "temperaturem:thermal_padding",
+    "count": 1
+  }
+}

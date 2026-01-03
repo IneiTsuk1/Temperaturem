@@ -1,6 +1,8 @@
 package net.IneiTsuki.temperaturem.player;
 
 import io.netty.buffer.Unpooled;
+import net.IneiTsuki.temperaturem.effects.TemperatureEffects;
+import net.IneiTsuki.temperaturem.equipment.UnderlayTemperatureManager;
 import net.IneiTsuki.temperaturem.util.TemperatureUtil;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
@@ -22,7 +24,7 @@ public class PlayerTemperatureManager {
     private static final int SYNC_INTERVAL = 3;
 
     private static int tickCounter = 0;
-    private static final int TICK_WRAP = UPDATE_INTERVAL * SYNC_INTERVAL * 100; // Prevent overflow
+    private static final int TICK_WRAP = UPDATE_INTERVAL * SYNC_INTERVAL * 100;
 
     public static void init() {
         ServerTickEvents.END_SERVER_TICK.register(PlayerTemperatureManager::tick);
@@ -48,10 +50,18 @@ public class PlayerTemperatureManager {
             );
 
             if (shouldUpdate) {
+                // Calculate base environmental temperature
                 double targetTemp = TemperatureUtil.getTargetTemperature(
                         player.getWorld(),
                         player.getBlockPos()
                 );
+
+                // Apply armor underlay protection
+                double armorProtection = UnderlayTemperatureManager.calculateArmorProtection(player);
+
+                // Protection works by moving target temperature toward comfortable range
+                // Positive protection counters cold, negative counters heat
+                targetTemp += armorProtection;
 
                 double currentTemp = temp.getExact();
                 double delta = targetTemp - currentTemp;
@@ -64,7 +74,13 @@ public class PlayerTemperatureManager {
                     currentTemp = clamp(currentTemp, -50, 150);
                     temp.setExact(currentTemp);
                 }
+
+                // Damage underlays based on current temperature conditions
+                UnderlayTemperatureManager.damageUnderlays(player, temp.get(), tickCounter);
             }
+
+            // Apply temperature effects every tick
+            TemperatureEffects.applyEffects(player, temp.get(), tickCounter);
 
             if (shouldSync) {
                 sendTemperatureToClient(player, temp.get());
@@ -81,15 +97,12 @@ public class PlayerTemperatureManager {
         if (distance > 50) {
             changeRate *= 2.0;
         } else if (distance > 20) {
-            // Smooth transition from 3.0x to 5.0x
             double factor = 1.2 + 2.0 * ((distance - 20) / 30.0);
             changeRate *= factor;
         } else if (distance > 10) {
-            // Smooth transition from 2.0x to 3.0x
             double factor = 1.1 + 1.0 * ((distance - 10) / 10.0);
             changeRate *= factor;
         } else if (distance > 1) {
-            // Smooth transition from 1.0x to 2.0x
             double factor = 1.0 + 1.0 * ((distance - 1) / 9.0);
             changeRate *= factor;
         }
