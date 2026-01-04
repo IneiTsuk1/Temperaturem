@@ -1,38 +1,182 @@
-# Temperature Mod for Minecraft
+# Temperaturem
 
-A realistic temperature system for Minecraft that dynamically affects players based on biome, blocks, weather, time of day, and environment. Designed for modpacks and server gameplay, with API support for other mods to interact with player temperature.
+A comprehensive Minecraft temperature survival mod that adds realistic environmental temperature mechanics, requiring players to manage their body temperature to survive in extreme climates.
 
----
+![Minecraft Version](https://img.shields.io/badge/Minecraft-1.20.1-brightgreen)
+![Mod Loader](https://img.shields.io/badge/Loader-Fabric-blue)
+![License](https://img.shields.io/badge/License-ILRL-yellow)
 
 ## Features
 
-- **Dynamic Player Temperature**
-  - Changes based on biome, altitude, time of day, weather, and nearby blocks.
-  - Gradual temperature adjustments with smooth transitions.
+### Dynamic Temperature System
+- **Biome-based temperatures** - Each biome has its own base temperature
+- **Block heat sources** - Lava, fire, campfires, and more affect nearby temperature
+- **Time-based variations** - Temperatures fluctuate between day and night
+- **Altitude effects** - Higher elevations are colder
+- **Weather impact** - Rain and storms reduce temperature
+- **Shelter mechanics** - Being under a roof provides warmth
 
-- **Biome Overrides**
-  - Custom biome temperatures configurable via JSON.
-  - Modded biome support included, just add in the JSON in the correct format (example given in config files)
+### Armor Underlay System
+Craft and apply temperature-regulating underlays to your armor for protection against extreme environments!
 
-- **Block Influence**
-  - Blocks can have a temperature so that blocks such as ice will cool down a player while normal blocks like dirt/sand etc dont affect your temperature.
-  - Multiple blocks balance each other; diminishing returns prevent unrealistic extremes.
-  - For modded biomes that have temperature support from this mod, the blocks from extreme heat/cold biomes can help reduce/increase heat in certain biomes
+#### Cold Protection Underlays
+- **Wool Lining** - Basic cold protection (+8°C, 500 durability)
+- **Fur Lining** - Good cold protection (+15°C, 800 durability)
+- **Thermal Padding** - Excellent cold protection (+25°C, 1200 durability) ✨
+- **Insulated Fabric** - Moderate cold protection (+12°C, 600 durability)
 
-- **Environmental Modifiers**
-  - Weather effects: rain, thunderstorms, snow.
-  - Shelter under roofs reduces exposure to weather penalties.
-  - Altitude and underground effects on temperature.
+#### Heat Protection Underlays
+- **Leather Lining** - Basic heat protection (-8°C, 500 durability)
+- **Cooling Mesh** - Good heat protection (-15°C, 800 durability)
+- **Climate Weave** - Excellent heat protection (-25°C, 1200 durability) ✨
+- **Reflective Layer** - Moderate heat protection (-12°C, 600 durability)
 
-- **API for Other Mods**
-  - Access via `TemperatureAPI.getInstance()`.
-  - Methods to get/set player temperature, and query block/biome temperatures.
-  - Planned future support for registering blocks/biomes at runtime.
+> High-tier underlays have an enchantment glint effect
 
----
+### Temperature Effects
+
+#### Cold Temperature Ranges
+- **0°C to -10°C (Cold)** - Slowness I
+- **-10°C to -20°C (Very Cold)** - Slowness II, Mining Fatigue I
+- **Below -20°C (Extreme Cold)** - Slowness III, Mining Fatigue II, Weakness II, damage over time
+
+#### Hot Temperature Ranges
+- **40°C to 55°C (Hot)** - Hunger
+- **55°C to 65°C (Very Hot)** - Weakness I, Hunger, Slowness I
+- **Above 65°C (Extreme Hot)** - Weakness II, Nausea, Slowness II, damage over time
+
+#### Comfortable Range
+- **12°C to 25°C** - Slight Regeneration bonus!
+
+### Gameplay Mechanics
+
+**Temperature Display** - Your current temperature is displayed on-screen (configurable)
+
+**Action Bar Warnings** - Receive alerts when entering dangerous temperature zones
+
+**Gradual Changes** - Temperature changes smoothly based on your environment
+
+**Underlay Durability** - Underlays wear down faster in extreme conditions they protect against
+
+**Strategic Choices** - Decide whether to protect against cold or heat based on your journey
 
 ## Installation
 
-1. Place the mod JAR in your `mods/` folder.
-2. Ensure Fabric API and Fabric Loader are installed.
-3. Start Minecraft; config files will generate automatically under:
+1. Install [Fabric Loader](https://fabricmc.net/use/)
+2. Download [Fabric API](https://modrinth.com/mod/fabric-api)
+3. Download Temperaturem
+4. Place both `.jar` files in your `.minecraft/mods` folder
+5. Launch Minecraft with the Fabric profile
+
+## How to Use
+
+### Applying Underlays
+1. Craft an underlay item (recipes available in-game)
+2. Open your inventory
+3. **Left-click** the underlay item on any armor piece to apply it
+4. The underlay is now attached and providing protection!
+
+### Removing Underlays
+1. **Shift + Right-click** on armor with an attached underlay
+2. The underlay will be removed and returned to your inventory
+3. Durability is preserved when removed
+
+## Configuration
+
+Configuration files are located in `config/temperaturem/`
+
+### `effects.json`
+```json
+{
+  "enableDamage": true,
+  "enableStatusEffects": true,
+  "enableWarnings": true,
+  "damageInterval": 40,
+  "coldDamage": 1.0,
+  "hotDamage": 1.0
+}
+```
+
+### `blocks/temperature_blocks.json`
+Define custom block temperatures:
+```json
+{
+  "minecraft:lava": "100",
+  "minecraft:fire": "80",
+  "minecraft:campfire": "60|70",
+  "minecraft:ice": "-10"
+}
+```
+
+### `biomes/biome_temperatures.json`
+Override biome temperatures:
+```json
+{
+  "minecraft:desert": "45",
+  "minecraft:snowy_taiga": "-15",
+  "minecraft:badlands": "40"
+}
+```
+
+## For Mod Developers
+
+Temperaturem provides a comprehensive API for integrating temperature mechanics into your mod. See [API_README.md](API_README.md) for detailed documentation.
+
+**Quick Example:**
+```java
+TemperatureAPI api = TemperatureAPI.getInstance();
+
+// Get player temperature
+int temp = api.getPlayerTemperature(player);
+
+// Register custom blocks
+api.registerBlockTemperature(
+    new Identifier("mymod", "hot_rock"), 
+    80
+);
+
+// Modify player temperature
+api.modifyPlayerTemperature(player, -10.0);
+```
+
+## Compatibility
+
+- **Minecraft**: 1.20.1
+- **Fabric Loader**: Latest
+- **Fabric API**: Required
+
+### Known Compatible Mods
+- Biome mods (just add them to the biome config file)
+- Armor mods (underlays work on any armor)
+
+## Performance
+
+Temperaturem is designed with performance in mind:
+- Efficient temperature calculations with caching
+- Concurrent-safe data structures
+- Configurable update intervals
+- Minimal network traffic
+
+## Credits
+
+**Developer:** IneiTsuki
+
+## License
+
+This project is licensed under the ILRL License - see the LICENSE file for details.
+
+## Support
+
+- **Issues:** [GitHub Issues](https://github.com/IneiTsuk1/Temperaturem/issues)
+
+## Changelog
+
+### Version 1.0.3
+- Initial release
+- Dynamic temperature system
+- 8 craftable armor underlays
+- Temperature-based effects and damage
+- Configuration system
+- Public API for mod integration
+
+---
