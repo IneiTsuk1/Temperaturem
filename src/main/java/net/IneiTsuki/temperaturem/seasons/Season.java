@@ -53,43 +53,23 @@ public enum Season {
         return description;
     }
 
-    /**
-     * Get the next season in the cycle.
-     */
     public Season next() {
         return values()[(this.ordinal() + 1) % values().length];
     }
 
-    /**
-     * Get the previous season in the cycle.
-     */
     public Season previous() {
         return values()[(this.ordinal() - 1 + values().length) % values().length];
     }
 
-    /**
-     * Get season by ID.
-     */
     public static Season fromId(int id) {
         Season[] values = values();
         return (id >= 0 && id < values.length) ? values[id] : SPRING;
     }
 
-
-    /**
-     * Get a colored text representation of this season.
-     */
     public Text toText() {
         return Text.literal(displayName).formatted(color);
     }
 
-    /**
-     * Calculate the temperature effect for this season based on the progress through it.
-     *
-     * @param progress Progress through the season (0.0 to 1.0)
-     * @param nextSeason The next season to transition towards
-     * @return The blended temperature modifier
-     */
     public double getTemperatureModifierWithTransition(double progress, Season nextSeason) {
         // Smooth transition in the last 25% of the season
         if (progress > 0.75) {
@@ -106,9 +86,6 @@ public enum Season {
         return this.temperatureModifier;
     }
 
-    /**
-     * Calculate the temperature multiplier with transition.
-     */
     public double getTemperatureMultiplierWithTransition(double progress, Season nextSeason) {
         if (progress > 0.75) {
             double transitionProgress = (progress - 0.75) / 0.25;

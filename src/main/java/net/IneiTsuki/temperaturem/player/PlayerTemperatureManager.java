@@ -88,9 +88,6 @@ public class PlayerTemperatureManager {
         }
     }
 
-    /**
-     * Calculate adaptive change rate with smooth transitions.
-     */
     private static double calculateChangeRate(double distance) {
         double changeRate = BASE_TEMP_CHANGE_RATE;
 

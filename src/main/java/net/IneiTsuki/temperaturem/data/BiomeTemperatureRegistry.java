@@ -80,10 +80,6 @@ public class BiomeTemperatureRegistry implements SimpleSynchronousResourceReload
         }
     }
 
-    /**
-     * Get temperature override for a biome.
-     * Runtime registrations take precedence over config values.
-     */
     public static Integer getTemperatureOverride(Identifier biomeId) {
         if (biomeId == null) return null;
 
@@ -100,14 +96,6 @@ public class BiomeTemperatureRegistry implements SimpleSynchronousResourceReload
         return RUNTIME_TEMPS.containsKey(biomeId) || BIOME_TEMPS.containsKey(biomeId);
     }
 
-    /**
-     * Register a biome temperature at runtime.
-     * This registration persists across resource reloads.
-     *
-     * @param biomeId The biome identifier
-     * @param temperature The base temperature in degrees Celsius
-     * @return true if successful
-     */
     public static boolean registerRuntime(Identifier biomeId, int temperature) {
         if (biomeId == null) {
             Temperaturem.LOGGER.warn("Attempted to register null biome ID");
@@ -124,12 +112,6 @@ public class BiomeTemperatureRegistry implements SimpleSynchronousResourceReload
         return true;
     }
 
-    /**
-     * Remove a runtime temperature registration.
-     *
-     * @param biomeId The biome identifier
-     * @return true if a registration was removed
-     */
     public static boolean unregisterRuntime(Identifier biomeId) {
         boolean removed = RUNTIME_TEMPS.remove(biomeId) != null;
         if (removed) {
@@ -138,18 +120,12 @@ public class BiomeTemperatureRegistry implements SimpleSynchronousResourceReload
         return removed;
     }
 
-    /**
-     * Clear all runtime registrations.
-     */
     public static void clearRuntimeRegistrations() {
         int count = RUNTIME_TEMPS.size();
         RUNTIME_TEMPS.clear();
         Temperaturem.LOGGER.info("Cleared {} runtime biome temperature registrations", count);
     }
 
-    /**
-     * Get all runtime registrations (unmodifiable view).
-     */
     public static Map<Identifier, Integer> getRuntimeRegistrations() {
         return new HashMap<>(RUNTIME_TEMPS);
     }

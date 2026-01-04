@@ -13,10 +13,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-/**
- * Commands for managing seasons.
- * Requires operator permissions (level 2).
- */
 public class SeasonCommand {
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {

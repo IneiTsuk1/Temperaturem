@@ -1,8 +1,4 @@
 {
-  "_version": "1.0",
-  "_comment": "Temperature values in Celsius. Modify these values to customize biome temperatures.",
-  "_info": "Valid range: -273 to 1000. Recommended range: -50 to 150 for gameplay balance.",
-
   "minecraft:desert": "45",
   "minecraft:badlands": "50",
   "minecraft:savanna": "40",

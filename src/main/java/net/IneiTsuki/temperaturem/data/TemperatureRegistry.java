@@ -95,10 +95,6 @@ public class TemperatureRegistry implements SimpleSynchronousResourceReloadListe
         }
     }
 
-    /**
-     * Get temperature for a block state.
-     * Runtime registrations take precedence over config values.
-     */
     public static int getTemperature(BlockState state) {
         if (state == null) return 0;
         Identifier id = Registries.BLOCK.getId(state.getBlock());
@@ -117,14 +113,6 @@ public class TemperatureRegistry implements SimpleSynchronousResourceReloadListe
         return RUNTIME_TEMPS.containsKey(id) || BLOCK_TEMPS.containsKey(id);
     }
 
-    /**
-     * Register a block temperature at runtime.
-     * This registration persists across resource reloads.
-     *
-     * @param blockId The block identifier
-     * @param temperature The temperature effect in degrees Celsius
-     * @return true if successful, false if block doesn't exist
-     */
     public static boolean registerRuntime(Identifier blockId, int temperature) {
         if (blockId == null) {
             Temperaturem.LOGGER.warn("Attempted to register null block ID");
@@ -146,12 +134,6 @@ public class TemperatureRegistry implements SimpleSynchronousResourceReloadListe
         return true;
     }
 
-    /**
-     * Remove a runtime temperature registration.
-     *
-     * @param blockId The block identifier
-     * @return true if a registration was removed
-     */
     public static boolean unregisterRuntime(Identifier blockId) {
         boolean removed = RUNTIME_TEMPS.remove(blockId) != null;
         if (removed) {
@@ -160,18 +142,12 @@ public class TemperatureRegistry implements SimpleSynchronousResourceReloadListe
         return removed;
     }
 
-    /**
-     * Clear all runtime registrations.
-     */
     public static void clearRuntimeRegistrations() {
         int count = RUNTIME_TEMPS.size();
         RUNTIME_TEMPS.clear();
         Temperaturem.LOGGER.info("Cleared {} runtime temperature registrations", count);
     }
 
-    /**
-     * Get all runtime registrations (unmodifiable view).
-     */
     public static Map<Identifier, Integer> getRuntimeRegistrations() {
         return new HashMap<>(RUNTIME_TEMPS);
     }

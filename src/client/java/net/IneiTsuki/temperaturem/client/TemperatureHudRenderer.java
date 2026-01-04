@@ -100,16 +100,10 @@ public class TemperatureHudRenderer implements HudRenderCallback {
         context.drawTextWithShadow(client.textRenderer, tempText, textX, textY, textColor);
     }
 
-    /**
-     * Format temperature with proper symbol.
-     */
     private String formatTemperature(int temp) {
         return temp + "°C";
     }
 
-    /**
-     * Get color based on temperature with smooth gradient.
-     */
     private int getColorFromTemperature(int temp) {
         temp = MathHelper.clamp(temp, -50, 150);
 
@@ -147,9 +141,6 @@ public class TemperatureHudRenderer implements HudRenderCallback {
         }
     }
 
-    /**
-     * Get text color based on danger level.
-     */
     private int getTextColor(int temp) {
         if (temp <= DANGER_COLD) return 0x00FFFF; // Cyan
         if (temp <= COLD_THRESHOLD) return 0x87CEEB; // Light blue
@@ -160,9 +151,6 @@ public class TemperatureHudRenderer implements HudRenderCallback {
         return 0xFF0000; // Red
     }
 
-    /**
-     * Linear interpolation between two colors.
-     */
     private int lerpColor(int color1, int color2, float t) {
         t = MathHelper.clamp(t, 0f, 1f);
 

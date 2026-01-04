@@ -13,10 +13,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/**
- * Mixin to handle applying underlays via inventory clicks.
- * Intercepts PICKUP actions when clicking armor with an underlay item.
- */
 @Mixin(ScreenHandler.class)
 public abstract class ScreenHandlerMixin {
 

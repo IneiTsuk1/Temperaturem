@@ -1,9 +1,4 @@
 {
-  "_version": "1.0",
-  "_comment": "Block temperature effects in Celsius. Use single value or min|max range.",
-  "_info": "These values are added to ambient temperature when near the block.",
-  "_multipliers": "Blocks at feet: 2x effect, blocks at player position: 1.5x effect",
-
   "minecraft:lava": "100",
   "minecraft:magma_block": "75",
   "minecraft:fire": "65",

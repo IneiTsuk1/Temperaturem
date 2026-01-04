@@ -6,10 +6,6 @@ import net.minecraft.util.math.Box;
 
 import java.util.UUID;
 
-/**
- * Represents a defined temperature zone in the world.
- * Zones override environmental temperature calculations within their bounds.
- */
 public class TemperatureZone {
 
     private final UUID id;
@@ -118,27 +114,14 @@ public class TemperatureZone {
 
     // ===== Zone Logic =====
 
-    /**
-     * Check if a position is within this zone's bounds.
-     */
     public boolean contains(BlockPos pos) {
         return bounds.contains(pos.getX(), pos.getY(), pos.getZ());
     }
 
-    /**
-     * Check if a position is within this zone's bounds (with double precision).
-     */
     public boolean contains(double x, double y, double z) {
         return bounds.contains(x, y, z);
     }
 
-    /**
-     * Calculate the temperature effect at a given position.
-     * Uses smooth transitions at zone edges if transitionRange > 0.
-     *
-     * @param pos The position to check
-     * @return The temperature effect (0 if outside zone, full temperature if inside)
-     */
     public double getTemperatureAt(BlockPos pos) {
         if (!enabled) return 0.0;
         if (!contains(pos)) return 0.0;
@@ -161,9 +144,6 @@ public class TemperatureZone {
         return temperature * smoothT;
     }
 
-    /**
-     * Get the shortest distance from a position to the zone's edge.
-     */
     private double getDistanceToEdge(BlockPos pos) {
         double x = pos.getX();
         double y = pos.getY();
@@ -176,16 +156,10 @@ public class TemperatureZone {
         return Math.min(dx, Math.min(dy, dz));
     }
 
-    /**
-     * Check if this zone overlaps with another zone.
-     */
     public boolean overlaps(TemperatureZone other) {
         return this.bounds.intersects(other.bounds);
     }
 
-    /**
-     * Get the volume of this zone in blocks.
-     */
     public long getVolume() {
         double dx = bounds.maxX - bounds.minX;
         double dy = bounds.maxY - bounds.minY;
@@ -250,22 +224,10 @@ public class TemperatureZone {
     // ===== Zone Types =====
 
     public enum ZoneType {
-        /**
-         * Adds to the existing temperature calculation.
-         * Good for heating/cooling systems that supplement natural temperature.
-         */
         ADDITIVE,
 
-        /**
-         * Completely overrides the environmental temperature.
-         * Best for sealed climate-controlled areas.
-         */
         ABSOLUTE,
 
-        /**
-         * Multiplies the environmental temperature by a factor.
-         * Useful for insulation effects.
-         */
         MULTIPLIER
     }
 

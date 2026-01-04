@@ -24,23 +24,6 @@ import java.util.UUID;
 /**
  * Implementation of the Temperature API for other mods to use.
  * Access via: TemperatureAPI.getInstance()
- *
- * Example usage:
- * <pre>
- * TemperatureAPI api = TemperatureAPI.getInstance();
- *
- * // Player temperature manipulation
- * int temp = api.getPlayerTemperature(player);
- * api.modifyPlayerTemperature(player, -10.0); // Cool player by 10 degrees
- *
- * // Runtime registration
- * api.registerBlockTemperature(new Identifier("mymod", "hot_rock"), 80);
- * api.registerBiomeTemperature(new Identifier("mymod", "volcanic_wastes"), 95);
- *
- * // Effect configuration
- * api.setEnableTemperatureDamage(true);
- * api.setDamageInterval(40); // Damage every 2 seconds
- * </pre>
  */
 public class TemperatureAPI implements ITemperatureAPI, ITemperatureZoneAPI, ISeasonAPI {
 
@@ -50,11 +33,6 @@ public class TemperatureAPI implements ITemperatureAPI, ITemperatureZoneAPI, ISe
         // Private constructor - use getInstance()
     }
 
-    /**
-     * Gets the singleton instance of the Temperature API.
-     *
-     * @return The API instance
-     */
     public static TemperatureAPI getInstance() {
         return INSTANCE;
     }
@@ -270,9 +248,6 @@ public class TemperatureAPI implements ITemperatureAPI, ITemperatureZoneAPI, ISe
         return manager.createZone(name, bounds, temperature, type);
     }
 
-    /**
-     * Helper method to create a Box from two BlockPos positions.
-     */
     private Box createBoundingBox(BlockPos pos1, BlockPos pos2) {
         double minX = Math.min(pos1.getX(), pos2.getX());
         double minY = Math.min(pos1.getY(), pos2.getY());

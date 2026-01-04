@@ -18,10 +18,6 @@ import net.minecraft.util.math.BlockPos;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Commands for managing temperature zones.
- * Requires operator permissions (level 2).
- */
 public class ZoneCommand {
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {

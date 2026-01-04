@@ -7,10 +7,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-/**
- * Handles temperature-based effects on players.
- * Effects are applied based on temperature thresholds.
- */
 public class TemperatureEffects {
 
     // Temperature thresholds
@@ -32,10 +28,6 @@ public class TemperatureEffects {
     private static float coldDamage = 1.0f;
     private static float hotDamage = 1.0f;
 
-    /**
-     * Apply temperature effects to a player based on their current temperature.
-     * Should be called periodically (e.g., every tick).
-     */
     public static void applyEffects(ServerPlayerEntity player, int temperature, int tickCounter) {
         if (player == null || player.isCreative() || player.isSpectator()) {
             return;
@@ -57,9 +49,6 @@ public class TemperatureEffects {
         }
     }
 
-    /**
-     * Apply status effects based on temperature.
-     */
     private static void applyStatusEffects(ServerPlayerEntity player, int temperature) {
         // Cold effects
         if (temperature <= EXTREME_COLD) {
@@ -113,9 +102,6 @@ public class TemperatureEffects {
         }
     }
 
-    /**
-     * Apply direct damage from extreme temperatures.
-     */
     private static void applyTemperatureDamage(ServerPlayerEntity player, int temperature) {
         float damage = 0;
 
@@ -139,9 +125,6 @@ public class TemperatureEffects {
         }
     }
 
-    /**
-     * Send warning messages to player about dangerous temperatures.
-     */
     private static void sendTemperatureWarning(ServerPlayerEntity player, int temperature) {
         Text warning = null;
         Formatting color = Formatting.WHITE;

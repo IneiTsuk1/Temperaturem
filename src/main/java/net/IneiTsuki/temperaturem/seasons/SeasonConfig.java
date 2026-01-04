@@ -6,9 +6,6 @@ import net.IneiTsuki.temperaturem.Temperaturem;
 
 import java.io.*;
 
-/**
- * Global configuration for the seasons system.
- */
 public class SeasonConfig {
 
     private static final String CONFIG_PATH = "config/temperaturem/seasons.json";

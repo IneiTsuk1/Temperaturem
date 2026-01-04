@@ -12,10 +12,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-/**
- * Manages all temperature zones in a world.
- * Zones are persistent and saved with world data.
- */
 public class TemperatureZoneManager extends PersistentState {
 
     private static final String DATA_NAME = "temperaturem_zones";
@@ -35,9 +31,6 @@ public class TemperatureZoneManager extends PersistentState {
 
     // ===== Static Access =====
 
-    /**
-     * Get the zone manager for a world, creating it if needed.
-     */
     public static TemperatureZoneManager get(ServerWorld world) {
         return INSTANCES.computeIfAbsent(world, w -> {
             TemperatureZoneManager manager = w.getPersistentStateManager()
@@ -50,18 +43,12 @@ public class TemperatureZoneManager extends PersistentState {
         });
     }
 
-    /**
-     * Clear manager instances (call on server stop).
-     */
     public static void clearInstances() {
         INSTANCES.clear();
     }
 
     // ===== Zone Management =====
 
-    /**
-     * Create a new temperature zone.
-     */
     public TemperatureZone createZone(String name, Box bounds, double temperature, TemperatureZone.ZoneType type) {
         UUID id = UUID.randomUUID();
         TemperatureZone zone = new TemperatureZone(id, name, bounds, temperature, type);
@@ -72,18 +59,12 @@ public class TemperatureZoneManager extends PersistentState {
         return zone;
     }
 
-    /**
-     * Add a pre-existing zone.
-     */
     public void addZone(TemperatureZone zone) {
         zones.put(zone.getId(), zone);
         clearPositionCache();
         markDirty();
     }
 
-    /**
-     * Remove a zone by ID.
-     */
     public boolean removeZone(UUID id) {
         TemperatureZone removed = zones.remove(id);
         if (removed != null) {
@@ -95,23 +76,14 @@ public class TemperatureZoneManager extends PersistentState {
         return false;
     }
 
-    /**
-     * Get a zone by ID.
-     */
     public TemperatureZone getZone(UUID id) {
         return zones.get(id);
     }
 
-    /**
-     * Get all zones.
-     */
     public Collection<TemperatureZone> getAllZones() {
         return Collections.unmodifiableCollection(zones.values());
     }
 
-    /**
-     * Get zones at a specific position, sorted by priority (highest first).
-     */
     public List<TemperatureZone> getZonesAt(BlockPos pos) {
         // Check cache first
         if (positionCache.containsKey(pos)) {
@@ -128,10 +100,6 @@ public class TemperatureZoneManager extends PersistentState {
         return result;
     }
 
-    /**
-     * Get the effective temperature at a position considering all zones.
-     * Returns null if no zones affect this position.
-     */
     public Double getZoneTemperatureAt(BlockPos pos) {
         List<TemperatureZone> zonesAtPos = getZonesAt(pos);
         if (zonesAtPos.isEmpty()) {
@@ -155,9 +123,6 @@ public class TemperatureZoneManager extends PersistentState {
         return result;
     }
 
-    /**
-     * Find zones by name (case-insensitive partial match).
-     */
     public List<TemperatureZone> findZonesByName(String nameQuery) {
         String query = nameQuery.toLowerCase();
         return zones.values().stream()
@@ -165,25 +130,16 @@ public class TemperatureZoneManager extends PersistentState {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Get zones that overlap with a given box.
-     */
     public List<TemperatureZone> getZonesInArea(Box area) {
         return zones.values().stream()
                 .filter(zone -> zone.getBounds().intersects(area))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Clear the position cache.
-     */
     private void clearPositionCache() {
         positionCache.clear();
     }
 
-    /**
-     * Periodic tick to clear cache and prevent memory growth.
-     */
     public void tick() {
         cacheClearCounter++;
         if (cacheClearCounter >= CACHE_CLEAR_INTERVAL) {

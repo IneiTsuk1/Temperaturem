@@ -41,11 +41,6 @@ public class TemperatureUnderlay {
         return (float) durability / type.getMaxDurability();
     }
 
-    /**
-     * Damages the underlay, reducing its durability.
-     * @param amount Amount of durability to remove
-     * @return true if the underlay broke (durability reached 0)
-     */
     public boolean damage(int amount) {
         durability -= amount;
         if (durability <= 0) {
@@ -55,20 +50,10 @@ public class TemperatureUnderlay {
         return false;
     }
 
-    /**
-     * Repairs the underlay by the specified amount.
-     * @param amount Amount of durability to restore
-     */
     public void repair(int amount) {
         durability = Math.min(durability + amount, type.getMaxDurability());
     }
 
-    /**
-     * Gets the temperature protection value of this underlay.
-     * Protection scales with durability (50-100% effectiveness based on condition).
-     *
-     * @return The temperature offset this underlay provides
-     */
     public double getProtectionValue() {
         float condition = getDurabilityPercent();
         // Min 50% effectiveness at low durability, 100% at full
@@ -76,23 +61,14 @@ public class TemperatureUnderlay {
         return type.getBaseProtection() * effectiveness;
     }
 
-    /**
-     * Checks if this underlay protects against cold temperatures.
-     */
     public boolean protectsFromCold() {
         return type.getBaseProtection() > 0;
     }
 
-    /**
-     * Checks if this underlay protects against hot temperatures.
-     */
     public boolean protectsFromHeat() {
         return type.getBaseProtection() < 0;
     }
 
-    /**
-     * Checks if the underlay is broken (no durability remaining).
-     */
     public boolean isBroken() {
         return durability <= 0;
     }

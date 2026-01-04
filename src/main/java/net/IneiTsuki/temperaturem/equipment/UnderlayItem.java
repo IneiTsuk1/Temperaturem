@@ -16,9 +16,6 @@ import java.util.List;
 
 import static net.IneiTsuki.temperaturem.equipment.UnderlayApplicationHandler.tryRemoveUnderlay;
 
-/**
- * Item representing a craftable underlay that can be applied to armor.
- */
 public class UnderlayItem extends Item {
 
     private final TemperatureUnderlay.UnderlayType underlayType;
@@ -32,9 +29,6 @@ public class UnderlayItem extends Item {
         return underlayType;
     }
 
-    /**
-     * Creates a new underlay instance from this item.
-     */
     public TemperatureUnderlay createUnderlay() {
         return new TemperatureUnderlay(underlayType);
     }

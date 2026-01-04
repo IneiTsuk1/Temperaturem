@@ -192,9 +192,6 @@ public class TemperatureUtil {
         return TemperatureRegistry.getTemperature(world.getBlockState(pos));
     }
 
-    /**
-     * Get temperature from zones, handling different zone types.
-     */
     private static Double getZoneTemperature(ServerWorld world, BlockPos pos) {
         TemperatureZoneManager manager = TemperatureZoneManager.get(world);
         List<TemperatureZone> zones = manager.getZonesAt(pos);

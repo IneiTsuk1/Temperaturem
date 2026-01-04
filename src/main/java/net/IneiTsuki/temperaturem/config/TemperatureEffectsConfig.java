@@ -7,10 +7,6 @@ import net.IneiTsuki.temperaturem.effects.TemperatureEffects;
 
 import java.io.*;
 
-/**
- * Configuration for temperature effects.
- * Loads from and saves to config/temperaturem/effects.json
- */
 public class TemperatureEffectsConfig {
 
     private static final String CONFIG_PATH = "config/temperaturem/effects.json";
@@ -24,9 +20,6 @@ public class TemperatureEffectsConfig {
     public float coldDamage = 1.0f; // 0.5 hearts
     public float hotDamage = 1.0f; // 0.5 hearts
 
-    /**
-     * Load configuration from file or create default.
-     */
     public static TemperatureEffectsConfig load() {
         File configFile = new File(CONFIG_PATH);
         TemperatureEffectsConfig config;
@@ -51,9 +44,6 @@ public class TemperatureEffectsConfig {
         return config;
     }
 
-    /**
-     * Save configuration to file.
-     */
     public void save() {
         File configFile = new File(CONFIG_PATH);
         File parentDir = configFile.getParentFile();
@@ -70,9 +60,6 @@ public class TemperatureEffectsConfig {
         }
     }
 
-    /**
-     * Apply this configuration to the effects system.
-     */
     public void apply() {
         TemperatureEffects.setEnableDamage(enableDamage);
         TemperatureEffects.setEnableStatusEffects(enableStatusEffects);

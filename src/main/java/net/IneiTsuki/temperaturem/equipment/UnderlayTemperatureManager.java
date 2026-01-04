@@ -5,21 +5,11 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-/**
- * Manages temperature protection from armor underlays.
- * Integrates with the main temperature system.
- */
 public class UnderlayTemperatureManager {
 
     private static final int DURABILITY_DAMAGE_INTERVAL = 200; // Damage every 10 seconds
     private static final int BASE_DURABILITY_DAMAGE = 1;
 
-    /**
-     * Calculates the temperature protection bonus from a player's equipped armor.
-     *
-     * @param player The player to check
-     * @return The temperature offset from underlays (positive reduces heat, negative reduces cold)
-     */
     public static double calculateArmorProtection(ServerPlayerEntity player) {
         if (player == null) return 0.0;
 
@@ -27,14 +17,6 @@ public class UnderlayTemperatureManager {
         return ArmorUnderlayComponent.getTotalProtection(armor);
     }
 
-    /**
-     * Applies wear to underlays based on environmental stress.
-     * Should be called periodically (e.g., every tick from PlayerTemperatureManager).
-     *
-     * @param player The player whose armor to damage
-     * @param currentTemp The player's current temperature
-     * @param tickCounter The current tick counter
-     */
     public static void damageUnderlays(ServerPlayerEntity player, int currentTemp, int tickCounter) {
         if (player == null || player.isCreative() || player.isSpectator()) return;
 
@@ -76,9 +58,6 @@ public class UnderlayTemperatureManager {
         }
     }
 
-    /**
-     * Calculates durability damage for an underlay based on conditions.
-     */
     private static int calculateUnderlayDamage(TemperatureUnderlay underlay,
                                                boolean extremeCold, boolean extremeHeat,
                                                boolean moderateCold, boolean moderateHeat) {
@@ -98,10 +77,6 @@ public class UnderlayTemperatureManager {
         return damage;
     }
 
-    /**
-     * Gets a description of the player's current underlay protection.
-     * Useful for debugging or UI display.
-     */
     public static String getProtectionSummary(ServerPlayerEntity player) {
         if (player == null) return "No player";
 

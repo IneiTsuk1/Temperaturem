@@ -12,20 +12,8 @@ import net.minecraft.util.Formatting;
 
 import java.util.List;
 
-/**
- * Handles applying underlays to armor pieces via inventory clicks.
- * This should be hooked into a screen handler or click event.
- */
 public class UnderlayApplicationHandler {
 
-    /**
-     * Attempts to apply an underlay to armor.
-     *
-     * @param player The player performing the action
-     * @param underlayStack The underlay item stack (in cursor/hand)
-     * @param armorStack The armor piece to apply to
-     * @return true if the underlay was successfully applied
-     */
     public static boolean tryApplyUnderlay(PlayerEntity player, ItemStack underlayStack, ItemStack armorStack) {
         // Validate inputs
         if (player == null || underlayStack.isEmpty() || armorStack.isEmpty()) {
@@ -81,13 +69,6 @@ public class UnderlayApplicationHandler {
         return true;
     }
 
-    /**
-     * Attempts to remove an underlay from armor.
-     *
-     * @param player The player performing the action
-     * @param armorStack The armor piece to remove underlay from
-     * @return The removed underlay item stack, or empty if none was removed
-     */
     public static ItemStack tryRemoveUnderlay(PlayerEntity player, ItemStack armorStack) {
         if (player == null || armorStack.isEmpty()) {
             return ItemStack.EMPTY;
@@ -128,9 +109,6 @@ public class UnderlayApplicationHandler {
         return removedItem;
     }
 
-    /**
-     * Creates an ItemStack for a removed underlay with preserved durability.
-     */
     private static ItemStack createUnderlayItemStack(TemperatureUnderlay underlay) {
         // Map underlay type to the corresponding item
         ItemStack stack = switch (underlay.getType()) {
@@ -153,9 +131,6 @@ public class UnderlayApplicationHandler {
         return stack;
     }
 
-    /**
-     * Checks if a player can apply an underlay (helper for UI enabling/disabling).
-     */
     public static boolean canApplyUnderlay(ItemStack underlayStack, ItemStack armorStack) {
         if (underlayStack.isEmpty() || armorStack.isEmpty()) return false;
         if (!(underlayStack.getItem() instanceof UnderlayItem)) return false;
@@ -164,9 +139,6 @@ public class UnderlayApplicationHandler {
         return true;
     }
 
-    /**
-     * Adds underlay information to armor tooltips.
-     */
     public static void addUnderlayTooltip(ItemStack armorStack, List<Text> tooltip) {
         if (armorStack.isEmpty() || !(armorStack.getItem() instanceof ArmorItem)) {
             return;

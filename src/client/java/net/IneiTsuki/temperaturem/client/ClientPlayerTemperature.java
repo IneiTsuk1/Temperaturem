@@ -17,10 +17,6 @@ public class ClientPlayerTemperature {
         targetTemperature = temp;
     }
 
-    /**
-     * Call this every frame to smoothly interpolate the displayed temperature.
-     * This prevents jarring jumps when server updates arrive.
-     */
     public static void tick() {
         if (displayTemperature != targetTemperature) {
             displayTemperature += (targetTemperature - displayTemperature) * LERP_SPEED;

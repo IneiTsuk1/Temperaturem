@@ -24,10 +24,6 @@ public class PlayerTemperature {
         this.temperature += delta;
     }
 
-    /**
-     * Gradually moves temperature toward zero at the specified rate.
-     * @param rate The rate at which to approach zero (degrees per call)
-     */
     public void approachZero(double rate) {
         if (temperature > rate) {
             temperature -= rate;
@@ -38,10 +34,6 @@ public class PlayerTemperature {
         }
     }
 
-    /**
-     * Legacy method for backward compatibility.
-     * Approaches zero at a rate of 1.0 per call.
-     */
     @Deprecated
     public void approachZero() {
         approachZero(1.0);
