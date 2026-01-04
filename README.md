@@ -33,6 +33,24 @@ Craft and apply temperature-regulating underlays to your armor for protection ag
 
 > High-tier underlays have an enchantment glint effect
 
+### Temperature Zones
+- Define temperature-controlled areas using 3D zones
+- **Absolute zones** fully override environmental temperature (e.g. heated buildings)
+- **Additive zones** modify natural temperature (e.g. heaters, air conditioning)
+- Smooth transitions near zone borders
+- Priority-based handling for overlapping zones
+- Zones can be enabled or disabled at runtime
+
+### Temperature Zone Commands
+- `/tempzone create <name> <pos1> <pos2> <temp> <ABSOLUTE|ADDITIVE>`
+- `/tempzone list` – List all zones in the world
+- `/tempzone info <uuid>` – View detailed zone info
+- `/tempzone find <name>` – Search zones by name
+- `/tempzone settemp <uuid> <value>` – Change zone temperature
+- `/tempzone setpriority <uuid> <value>` – Set zone priority
+- `/tempzone toggle <uuid>` – Enable or disable a zone
+- `/tempzone here` – Show zones affecting your current position
+
 ### Temperature Effects
 
 #### Cold Temperature Ranges
@@ -139,6 +157,28 @@ api.registerBlockTemperature(
 api.modifyPlayerTemperature(player, -10.0);
 ```
 
+**Temperature Zones:**
+```
+// Create a temperature-controlled zone
+TemperatureAPI api = TemperatureAPI.getInstance();
+
+TemperatureZone zone = api.createZone(
+    world,
+    "Heated Building",
+    corner1,
+    corner2,
+    22.0,
+    TemperatureZone.ZoneType.ABSOLUTE
+);
+
+// Query zones at a position
+List<TemperatureZone> zones = api.getZonesAt(world, playerPos);
+
+// Get effective zone temperature
+Double zoneTemp = api.getZoneTemperatureAt(world, playerPos);
+
+```
+
 ## Compatibility
 
 - **Minecraft**: 1.20.1
@@ -171,12 +211,11 @@ This project is licensed under the ILRL License - see the LICENSE file for detai
 
 ## Changelog
 
-### Version 1.0.3
-- Initial release
-- Dynamic temperature system
-- 8 craftable armor underlays
-- Temperature-based effects and damage
-- Configuration system
-- Public API for mod integration
+### Version 1.0.4
+- Added TemperatureAPI temperature zones
+- Support for absolute and additive temperature-controlled areas
+- Priority-based zone resolution and smooth transitions
+- In-game commands for zone management
+- Expanded public API for mod integration
 
 ---
