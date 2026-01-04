@@ -1,4 +1,4 @@
-# Temperaturem
+# TemperatureM
 
 A comprehensive Minecraft temperature survival mod that adds realistic environmental temperature mechanics, requiring players to manage their body temperature to survive in extreme climates.
 
