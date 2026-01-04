@@ -22,13 +22,13 @@ Craft and apply temperature-regulating underlays to your armor for protection ag
 #### Cold Protection Underlays
 - **Wool Lining** - Basic cold protection (+8°C, 500 durability)
 - **Fur Lining** - Good cold protection (+15°C, 800 durability)
-- **Thermal Padding** - Excellent cold protection (+25°C, 1200 durability) ✨
+- **Thermal Padding** - Excellent cold protection (+25°C, 1200 durability)
 - **Insulated Fabric** - Moderate cold protection (+12°C, 600 durability)
 
 #### Heat Protection Underlays
 - **Leather Lining** - Basic heat protection (-8°C, 500 durability)
 - **Cooling Mesh** - Good heat protection (-15°C, 800 durability)
-- **Climate Weave** - Excellent heat protection (-25°C, 1200 durability) ✨
+- **Climate Weave** - Excellent heat protection (-25°C, 1200 durability)
 - **Reflective Layer** - Moderate heat protection (-12°C, 600 durability)
 
 > High-tier underlays have an enchantment glint effect
