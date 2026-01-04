@@ -2,13 +2,18 @@ package net.IneiTsuki.temperaturem.util;
 
 import net.IneiTsuki.temperaturem.data.BiomeTemperatureRegistry;
 import net.IneiTsuki.temperaturem.data.TemperatureRegistry;
+import net.IneiTsuki.temperaturem.zones.TemperatureZone;
+import net.IneiTsuki.temperaturem.zones.TemperatureZoneManager;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+
+import java.util.List;
 
 public class TemperatureUtil {
 
@@ -26,6 +31,15 @@ public class TemperatureUtil {
     private static final double BLOCK_WEIGHT = 0.3;
 
     public static double getTargetTemperature(World world, BlockPos playerPos) {
+        // Check for temperature zones first (highest priority)
+        if (world instanceof ServerWorld serverWorld) {
+            Double zoneTemp = getZoneTemperature(serverWorld, playerPos);
+            if (zoneTemp != null) {
+                return clamp(zoneTemp, -50, 150);
+            }
+        }
+
+        // Fall back to standard calculation
         double baseTemp = getBaseTemperature(world, playerPos) * BIOME_WEIGHT;
         double blockInfluence = getNearbyBlockInfluence(world, playerPos) * BLOCK_WEIGHT;
         double environmentMod = getEnvironmentalModifiers(world, playerPos);
@@ -176,5 +190,55 @@ public class TemperatureUtil {
 
     public static double getBlockContribution(World world, BlockPos pos) {
         return TemperatureRegistry.getTemperature(world.getBlockState(pos));
+    }
+
+    /**
+     * Get temperature from zones, handling different zone types.
+     */
+    private static Double getZoneTemperature(ServerWorld world, BlockPos pos) {
+        TemperatureZoneManager manager = TemperatureZoneManager.get(world);
+        List<TemperatureZone> zones = manager.getZonesAt(pos);
+
+        if (zones.isEmpty()) {
+            return null;
+        }
+
+        // Get highest priority zone
+        TemperatureZone primaryZone = zones.get(0);
+
+        switch (primaryZone.getType()) {
+            case ABSOLUTE:
+                // Absolute zones completely override all other calculations
+                return primaryZone.getTemperatureAt(pos);
+
+            case ADDITIVE:
+                // Additive zones modify the base temperature
+                double baseTemp = getBaseTemperature(world, pos) * BIOME_WEIGHT;
+                double blockInfluence = getNearbyBlockInfluence(world, pos) * BLOCK_WEIGHT;
+                double environmentMod = getEnvironmentalModifiers(world, pos);
+                double naturalTemp = baseTemp + blockInfluence + environmentMod;
+
+                // Add all additive zone effects
+                double zoneModifier = 0;
+                for (TemperatureZone zone : zones) {
+                    if (zone.getType() == TemperatureZone.ZoneType.ADDITIVE) {
+                        zoneModifier += zone.getTemperatureAt(pos);
+                    }
+                }
+
+                return naturalTemp + zoneModifier;
+
+            case MULTIPLIER:
+                // Multiplier zones scale the natural temperature
+                double naturalTemp2 = getBaseTemperature(world, pos) * BIOME_WEIGHT;
+                naturalTemp2 += getNearbyBlockInfluence(world, pos) * BLOCK_WEIGHT;
+                naturalTemp2 += getEnvironmentalModifiers(world, pos);
+
+                double multiplier = primaryZone.getTemperatureAt(pos) / 100.0; // Zone temp as percentage
+                return naturalTemp2 * multiplier;
+
+            default:
+                return null;
+        }
     }
 }
