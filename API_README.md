@@ -6,10 +6,15 @@ A comprehensive API for integrating temperature mechanics into your Minecraft mo
 - [Getting Started](#getting-started)
 - [Player Temperature Management](#player-temperature-management)
 - [Runtime Registration](#runtime-registration)
+- [Temperature Zones](#temperature-zones)
 - [Query Methods](#query-methods)
 - [Effect Configuration](#effect-configuration)
 - [Advanced Usage](#advanced-usage)
 - [Best Practices](#best-practices)
+- [Error Handling](#error-handling)
+- [API Reference](#api-reference-summary)
+- [Support](#support)
+- [Version Compatibility](#version-compatibility)
 
 ## Getting Started
 
@@ -36,6 +41,7 @@ import net.IneiTsuki.temperaturem.api.TemperatureAPI;
 
 TemperatureAPI api = TemperatureAPI.getInstance();
 ```
+The API is server-side only and safe to cache.
 
 ## Player Temperature Management
 
@@ -141,6 +147,55 @@ boolean removed = api.unregisterBlockTemperature(
 boolean removed = api.unregisterBiomeTemperature(
     new Identifier("mymod", "volcanic_wasteland")
 );
+```
+## Temperature Zones
+
+Temperature Zones allow localized 3D areas with controlled temperature behavior, either additive or absolute.
+
+### Zone Types
+#### Absolute - completley overrides environmental temperature.
+#### Additive - Adds to/subtracts from the natural temperature.
+
+### Creating a Zone
+```
+TemperatureZone zone = api.createZone(
+    world,
+    "Heated Building",
+    new BlockPos(100, 64, 100),
+    new BlockPos(120, 80, 120),
+    22.0,
+    TemperatureZone.ZoneType.ABSOLUTE
+);
+```
+
+### Additive Zone Example
+```
+TemperatureZone coolingZone = api.createZone(
+    world,
+    "Air Conditioning",
+    new BlockPos(50, 64, 50),
+    new BlockPos(70, 75, 70),
+    -15.0,
+    TemperatureZone.ZoneType.ADDITIVE
+);
+
+coolingZone.setTransitionRange(5.0); // Smooth blending over 5 blocks
+coolingZone.setPriority(10);          // Higher priority than default
+```
+
+### Updating Zone Properties
+```
+api.setZoneTemperature(world, zone.getId(), 20.0);
+api.setZoneEnabled(world, zone.getId(), false);
+```
+
+### Querying Zones
+```
+List<TemperatureZone> zones = api.getZonesAt(world, player.getBlockPos());
+Double zoneTemp = api.getZoneTemperatureAt(world, player.getBlockPos());
+List<TemperatureZone> foundZones = api.findZonesByName(world, "building");
+int totalZones = api.getZoneCount(world);
+long totalVolume = api.getTotalZoneVolume(world);
 ```
 
 ### Example: Dynamic Temperature System
@@ -549,6 +604,16 @@ public boolean registerSafely(Identifier blockId, int temperature) {
 - `boolean unregisterBlockTemperature(Identifier)`
 - `boolean unregisterBiomeTemperature(Identifier)`
 
+### Temperature Zones
+- `TemperatureZone createZone(World, String, BlockPos, BlockPos, double, ZoneType)`
+- `void setZoneTemperature(World, UUID, double)`
+- `void setZoneEnabled(World, UUID, boolean)`
+- `List<TemperatureZone> getZonesAt(World, BlockPos)`
+- `Double getZoneTemperatureAt(World, BlockPos)`
+- `List<TemperatureZone> findZonesByName(World, String)`
+- `int getZoneCount(World)`
+- `long getTotalZoneVolume(World)`
+
 ### Query Methods
 - `int getBlockTemperature(Identifier)`
 - `Integer getBiomeTemperature(Identifier)`
@@ -580,4 +645,4 @@ For API support and questions:
 
 | Temperaturem Version | API Version | Minecraft Version |
 |---------------------|-------------|-------------------|
-| 1.0.3 | 1.0 | 1.20.1 |
+| 1.0.4 | 1.0 | 1.20.1 |
