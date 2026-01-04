@@ -1,65 +1,299 @@
-IneiTsuki Limited Redistribution License (ILRL) – Version 1.0 (2025)
+IneiTsuki Limited Redistribution License (ILRL) – Version 1.1 (2025-2026)
 ==================================================================
 
-Copyright (c) 2025 IneiTsuki
+Copyright (c) 2025-2026 IneiTsuki
+All rights reserved.
 
-Permission is granted to use, copy, and modify this software for personal,
-non-commercial purposes only.
-
----
-
-1. Redistribution Rules
------------------------
-
-1.1 Unmodified Redistribution
-- You may redistribute the software in its original, unmodified form.
-- The copyright notice and this license **must remain intact**.
-
-1.2 Modified Redistribution
-- You **cannot redistribute modified versions** (source or compiled) without
-  **prior written permission** from the copyright holder.
-
-1.3 Credit Requirement
-- Any redistribution, modified or unmodified, **must credit the original
-  author** for the unmodified parts of the software.
+This license governs the use, modification, and distribution of the 
+Temperaturem mod (the "Software").
 
 ---
 
-2. Usage Restrictions
----------------------
+DEFINITIONS
+-----------
 
-- The software is **for personal, non-commercial use only**.
-- You **may not use this software to create derivative works** that violate
-  Minecraft’s End User License Agreement (EULA) or terms of service.
-- This license **does not grant rights** to Minecraft trademarks, logos, or
-  other intellectual property owned by Mojang or Microsoft.
+"Software" refers to the Temperaturem mod, including all source code, 
+compiled binaries, assets, documentation, and associated files.
+
+"Unmodified Redistribution" means distributing the Software in its exact 
+original form without any alterations to code, assets, or files.
+
+"Modified Version" means any version of the Software where the source code, 
+compiled binaries, assets, or any other component has been altered, added to, 
+or removed from the original.
+
+"Personal Use" means use by individuals for non-commercial purposes, including 
+playing on private servers or creating content for personal enjoyment.
+
+"Commercial Use" means any use intended for or resulting in commercial 
+advantage or monetary compensation, including but not limited to: selling 
+the Software, using it on commercial servers with paid features, or 
+incorporating it into paid products or services.
+
+"Author" refers to IneiTsuki, the copyright holder of this Software.
 
 ---
 
-3. Warranty Disclaimer
-----------------------
+1. GRANT OF LICENSE
+-------------------
 
-- The software is provided **“as-is”**.
-- The author(s) **do not provide any warranty** of any kind, either express
-  or implied.
-- The author(s) **are not liable** for any damages or claims arising from
-  the use of this software.
+Subject to the terms and conditions of this license, the Author grants you 
+a limited, non-exclusive, non-transferable, revocable license to:
+
+1.1 Use the Software for Personal, non-commercial purposes
+1.2 Modify the Software for Personal use only
+1.3 Study the source code for educational purposes
 
 ---
 
-4. Summary of Key Points
+2. REDISTRIBUTION RIGHTS
 ------------------------
 
-- Personal, non-commercial use allowed.
-- Redistribution of modified versions requires **permission**.
-- Always credit the original author for unmodified content.
-- No Minecraft IP rights granted.
-- Software is **provided without warranty**.
+2.1 Unmodified Redistribution
+    You MAY redistribute the Software in its original, unmodified form 
+    provided that:
+    
+    a) This license file remains intact and unmodified
+    b) All copyright notices remain intact
+    c) Clear attribution is given to the original Author
+    d) No fee is charged for the redistribution itself (hosting fees 
+       are acceptable)
+    e) The redistribution is not part of a commercial product or service
+
+2.2 Modified Redistribution
+    You MAY NOT redistribute Modified Versions of the Software without 
+    explicit, prior written permission from the Author.
+    
+    To request permission:
+    - Contact the Author through the official GitHub repository
+    - Provide detailed description of modifications
+    - Explain intended distribution method and audience
+    
+    Permission may be granted at the Author's sole discretion and may 
+    include specific conditions.
+
+2.3 Permitted Exceptions
+    The following are explicitly permitted WITHOUT requiring permission:
+    
+    a) Distributing the unmodified Software as a dependency for modpacks
+    b) Creating and sharing configuration files
+    c) Sharing bug reports and improvement suggestions
+    d) Creating educational content, reviews, or tutorials featuring 
+       the Software
 
 ---
 
-5. Notes
---------
+3. ATTRIBUTION REQUIREMENTS
+---------------------------
 
-- This license does not override Mojang/Microsoft's Minecraft EULA:
-  https://account.mojang.com/documents/minecraft_eula
+3.1 All distributions (modified or unmodified) MUST include:
+    a) Credit to IneiTsuki as the original author
+    b) A link to the official repository or distribution page
+    c) A clear statement identifying which portions are original and 
+       which (if any) are modified
+
+3.2 Attribution Format:
+    Minimum required attribution should read:
+    "Temperaturem by IneiTsuki - [repository URL]"
+    
+    For Modified Versions (if permission granted):
+    "Based on Temperaturem by IneiTsuki - Modified by [Your Name]"
+
+---
+
+4. USAGE RESTRICTIONS
+---------------------
+
+4.1 Commercial Use
+    Commercial use of the Software is PROHIBITED without a separate 
+    commercial license agreement with the Author.
+
+4.2 Compliance with Minecraft Terms
+    a) Use of this Software MUST comply with Mojang Studios/Microsoft's 
+       Minecraft End User License Agreement (EULA)
+    b) This license does NOT grant any rights to Minecraft trademarks, 
+       logos, or other intellectual property owned by Mojang Studios 
+       or Microsoft
+    c) Any use that violates Minecraft's EULA automatically terminates 
+       this license
+
+4.3 Prohibited Activities
+    You MAY NOT:
+    a) Remove or alter copyright notices or license information
+    b) Use the Software's name or the Author's name to endorse derivative 
+       works without permission
+    c) Claim the Software or any substantial portion as your own work
+    d) Use the Software in any way that violates applicable laws or 
+       regulations
+    e) Reverse engineer, decompile, or disassemble compiled portions 
+       (except as permitted by applicable law)
+    f) Create malicious modifications (malware, exploits, etc.)
+
+---
+
+5. API AND INTEGRATION
+----------------------
+
+5.1 API Usage
+    Other mods MAY integrate with the Temperaturem API provided that:
+    
+    a) The integration is for non-commercial purposes
+    b) The integration does not circumvent license restrictions
+    c) Proper attribution is given when using API features
+    d) The API is not extracted and redistributed separately
+
+5.2 Modpack Inclusion
+    Unmodified versions of the Software MAY be included in modpacks 
+    without additional permission, provided:
+    
+    a) Attribution requirements (Section 3) are met
+    b) The modpack itself complies with this license
+    c) No fee is charged specifically for this Software
+    d) The modpack distribution method allows users to verify the 
+       Software's integrity
+
+---
+
+6. WARRANTY DISCLAIMER
+----------------------
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
+
+THE AUTHOR MAKES NO WARRANTIES ABOUT:
+- The Software's suitability for any particular purpose
+- The Software's compatibility with other mods or Minecraft versions
+- The absence of errors, bugs, or security vulnerabilities
+- Continued maintenance, updates, or support
+
+---
+
+7. LIMITATION OF LIABILITY
+--------------------------
+
+IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER 
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING 
+FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+DEALINGS IN THE SOFTWARE.
+
+This includes, but is not limited to:
+- Loss of data or corrupted worlds
+- Server crashes or performance issues
+- Incompatibility with other software
+- Any consequential, incidental, or indirect damages
+
+---
+
+8. TERMINATION
+--------------
+
+8.1 Automatic Termination
+    Your rights under this license terminate automatically if you:
+    
+    a) Violate any term of this license
+    b) Fail to comply with attribution requirements
+    c) Use the Software for commercial purposes without authorization
+    d) Redistribute Modified Versions without permission
+
+8.2 Effect of Termination
+    Upon termination:
+    a) You must immediately cease all use and distribution of the Software
+    b) You must delete all copies in your possession or control
+    c) Sections 6 (Warranty), 7 (Liability), and 9 (General) survive 
+       termination
+
+---
+
+9. GENERAL PROVISIONS
+---------------------
+
+9.1 License Updates
+    The Author may publish revised versions of this license. Unless 
+    otherwise specified, you may use the Software under the terms of 
+    the version under which you originally received it, or any later 
+    version published by the Author.
+
+9.2 Severability
+    If any provision of this license is held to be unenforceable, such 
+    provision shall be reformed only to the extent necessary to make it 
+    enforceable, and the remaining provisions shall remain in effect.
+
+9.3 No Waiver
+    Failure to enforce any provision of this license does not constitute 
+    a waiver of that provision or any other provision.
+
+9.4 Entire Agreement
+    This license constitutes the entire agreement between you and the 
+    Author regarding the Software and supersedes all prior agreements.
+
+9.5 Governing Law
+    This license shall be governed by and construed in accordance with 
+    applicable international copyright law and software licensing 
+    conventions.
+
+9.6 Contact Information
+    For permissions, questions, or clarifications regarding this license:
+    - GitHub: https://github.com/IneiTsuk1/Temperaturem
+    - Issues: https://github.com/IneiTsuk1/Temperaturem/issues
+
+---
+
+10. SPECIAL PROVISIONS FOR MINECRAFT MODS
+-----------------------------------------
+
+10.1 Minecraft EULA Compliance
+     This Software is designed for use with Minecraft. By using this 
+     Software, you acknowledge and agree to comply with the Minecraft 
+     End User License Agreement:
+     https://account.mojang.com/documents/minecraft_eula
+
+10.2 Server Usage
+     Server administrators may install the Software on their servers 
+     without additional permission, provided:
+     
+     a) The server is non-commercial OR properly licensed for commercial use
+     b) The Software is not modified
+     c) Server rules comply with Minecraft's EULA
+     d) Players are informed that the Software is in use
+
+10.3 Content Creation
+     Content creators (streamers, video creators, etc.) may feature the 
+     Software in their content without additional permission, and may 
+     monetize such content according to their platform's terms of service.
+
+---
+
+SUMMARY (Non-Binding)
+---------------------
+
+This is a plain-language summary for convenience. The full license terms 
+above are legally binding.
+
+ You CAN:
+   - Use for personal, non-commercial purposes
+   - Modify for personal use
+   - Redistribute unmodified versions (with credit)
+   - Include in modpacks (unmodified, with credit)
+   - Use the API in your mods
+   - Feature in content creation
+
+ You CANNOT:
+   - Use commercially without permission
+   - Redistribute modified versions without permission
+   - Remove credits or license information
+   - Claim the work as your own
+   - Use in ways that violate Minecraft's EULA
+
+ You MUST:
+   - Credit the original author
+   - Keep license information intact
+   - Comply with Minecraft's EULA
+   - Request permission for modified redistribution
+
+---
+
+END OF LICENSE
+
+Last Updated: January 2026
+Version: 1.1
