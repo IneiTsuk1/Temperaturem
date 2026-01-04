@@ -158,7 +158,7 @@ api.modifyPlayerTemperature(player, -10.0);
 ```
 
 **Temperature Zones:**
-```
+```java
 // Create a temperature-controlled zone
 TemperatureAPI api = TemperatureAPI.getInstance();
 
