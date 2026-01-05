@@ -2,10 +2,12 @@ package net.IneiTsuki.temperaturem.util;
 
 import net.IneiTsuki.temperaturem.data.BiomeTemperatureRegistry;
 import net.IneiTsuki.temperaturem.data.TemperatureRegistry;
+import net.IneiTsuki.temperaturem.seasons.SeasonManager;
 import net.IneiTsuki.temperaturem.zones.TemperatureZone;
 import net.IneiTsuki.temperaturem.zones.TemperatureZoneManager;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
@@ -44,14 +46,30 @@ public class TemperatureUtil {
         double blockInfluence = getNearbyBlockInfluence(world, playerPos) * BLOCK_WEIGHT;
         double environmentMod = getEnvironmentalModifiers(world, playerPos);
 
-        return clamp(baseTemp + blockInfluence + environmentMod, -50, 150);
+        double finalTemp = baseTemp + blockInfluence + environmentMod;
+
+        // Apply seasonal effects
+        if (world instanceof ServerWorld serverWorld) {
+            SeasonManager seasonManager = SeasonManager.get(serverWorld);
+            if (seasonManager.isEnabled()) {
+                // Apply multiplier first
+                double multiplier = seasonManager.getSeasonalTemperatureMultiplier();
+                finalTemp *= multiplier;
+
+                // Then add modifier
+                double modifier = seasonManager.getSeasonalTemperatureModifier();
+                finalTemp += modifier;
+            }
+        }
+
+        return clamp(finalTemp, -50, 150);
     }
 
     private static double getBaseTemperature(World world, BlockPos pos) {
         RegistryEntry<Biome> biomeEntry = world.getBiome(pos);
 
         Identifier biomeId = biomeEntry.getKey()
-                .map(key -> key.getValue())
+                .map(RegistryKey::getValue)
                 .orElse(null);
 
         Integer biomeOverride = biomeId != null
@@ -79,7 +97,7 @@ public class TemperatureUtil {
     private static double getTimeTemperatureModifier(World world) {
         long time = world.getTimeOfDay() % 24000;
         double normalizedTime = ((time - 6000) / 24000.0) * 2 * Math.PI;
-        return -Math.cos(normalizedTime) * 3.0;
+        return Math.cos(normalizedTime) * 3.0;
     }
 
     private static double getNearbyBlockInfluence(World world, BlockPos center) {
@@ -150,7 +168,7 @@ public class TemperatureUtil {
     }
 
     private static double getEnvironmentalModifiers(World world, BlockPos pos) {
-        double modifier = 1;
+        double modifier = 0;
 
         if (isUnderRoof(world, pos)) {
             modifier += 5.0;
@@ -206,6 +224,8 @@ public class TemperatureUtil {
         switch (primaryZone.getType()) {
             case ABSOLUTE:
                 // Absolute zones completely override all other calculations
+                // Note: Seasons still don't affect absolute zones - this is intentional
+                // as absolute zones are meant to have exact temperatures
                 return primaryZone.getTemperatureAt(pos);
 
             case ADDITIVE:
@@ -214,6 +234,13 @@ public class TemperatureUtil {
                 double blockInfluence = getNearbyBlockInfluence(world, pos) * BLOCK_WEIGHT;
                 double environmentMod = getEnvironmentalModifiers(world, pos);
                 double naturalTemp = baseTemp + blockInfluence + environmentMod;
+
+                // Apply seasonal effects to natural temperature
+                SeasonManager seasonManager = SeasonManager.get(world);
+                if (seasonManager.isEnabled()) {
+                    naturalTemp *= seasonManager.getSeasonalTemperatureMultiplier();
+                    naturalTemp += seasonManager.getSeasonalTemperatureModifier();
+                }
 
                 // Add all additive zone effects
                 double zoneModifier = 0;
@@ -231,6 +258,14 @@ public class TemperatureUtil {
                 naturalTemp2 += getNearbyBlockInfluence(world, pos) * BLOCK_WEIGHT;
                 naturalTemp2 += getEnvironmentalModifiers(world, pos);
 
+                // Apply seasonal effects first
+                SeasonManager seasonManager2 = SeasonManager.get(world);
+                if (seasonManager2.isEnabled()) {
+                    naturalTemp2 *= seasonManager2.getSeasonalTemperatureMultiplier();
+                    naturalTemp2 += seasonManager2.getSeasonalTemperatureModifier();
+                }
+
+                // Then apply zone multiplier
                 double multiplier = primaryZone.getTemperatureAt(pos) / 100.0; // Zone temp as percentage
                 return naturalTemp2 * multiplier;
 
